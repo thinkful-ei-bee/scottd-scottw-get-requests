@@ -1,25 +1,21 @@
 'use strict';
+/* global $ */
 
-store = {
+const store = {
   dogs: [],
 };
 
 function getDogImage() {
-  console.log('test');
-  const endpoint = `https://dog.ceo/api/breeds/image/random/${$('#numdogs').val()}`;
-  console.log(endpoint);
-  fetch(`https://dog.ceo/api/breeds/image/random/${$('#numdogs').val()}`)
-  .then(response => console.log(response.json());
-  //.then(dog => store.dogs.push(dog));
+  fetch(`https://dog.ceo/api/breeds/image/random/${$('#num-dogs').val()}`)
+    .then(response => response.json())
+    .then(responseJson => console.log(responseJson));
 }
 
-function watchForm () {
-  console.log('test');
-  ('#dogform').submit(event => {
-  console.log('watchForm');
-  event.preventDefault();
-  getDogImage();  
-});
+function watchForm() {
+  $('#dogform').submit(event => {
+    event.preventDefault();
+    getDogImage();  
+  });
 }
 
 $(watchForm);
