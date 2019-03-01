@@ -2,29 +2,35 @@
 /* global $ */
 
 const store = {
-  dogs: [],
+  dog: '',
 };
 
-function renderDogs() {
-  $('.container').html(store.dogs.map(e => `<img src="${e}" alt="a dog">`));
+function renderDog() {
+  if (store.dog === '') {
+    $('.container').empty();
+  } else {
+    $('.container').html(`<img src="${store.dog}" alt="a dog">`);
+  }  
 }
 
 function getDogImage() {
-  return fetch(`https://dog.ceo/api/breeds/image/random/${$('#num-dogs').val()}`)
-    .then(response => response.json())
+  return fetch(`https://dog.ceo/api/breed/${$('#breed').val()}/images/random`)
+    .then(response => {
+      if (response.status === 404) {
+        store.dog = '';
+        throw new Error('Breed not found');
+      }
+      return response.json()})
     .then(dogImage => {
-      store.dogs = dogImage.message;
-      //renderDogs();
-      store.dogs.forEach(dog => console.log(dog));
-      return;
-    });
-
+      store.dog = dogImage.message;
+    })
+    .catch(error => alert(error.message));
 }
 
 function watchForm() {
   $('#dogform').submit(event => {
     event.preventDefault();
-    getDogImage().then(renderDogs);
+    getDogImage().then(renderDog);
   });
 }
 
