@@ -20,7 +20,7 @@ function getDogImage() {
         store.dog = '';
         throw new Error('Breed not found');
       }
-      return response.json()})
+      return response.json();})
     .then(dogImage => {
       store.dog = dogImage.message;
     })
